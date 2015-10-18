@@ -25,17 +25,26 @@ def from_heights(s):
 pieces = [from_heights(s) for s in raw_pieces]
 
 def rotations(polycube):
-    for i in range(3):
-        # permute axes xyz, yzx, zxy
-        polycube = numpy.transpose(polycube, (1, 2, 0))
-        for turns in range(4):
-            polycube = numpy.rot90(polycube)
-            yield polycube
+    # imagine shape is pointing in axis 0 (up)
 
-def more(polycube):
-    # axes -xzy
-    polycube = numpy.flipud(polycube)
-    polycube = numpy.swapaxes(polycube, 1, 2)
+    # four rotations about axis 0
+    yield from rotations4(polycube, 0)
+
+    # rotate 180 about axis 1, shape is pointing down in axis 0
+    yield from rotations4(rot90(polycube, 2, axis=1), 0)
+
+    # rotate about axis 1, now shape is pointing in axis 2
+    yield from rotations4(rot90(polycube, axis=1), 2)
+    yield from rotations4(rot90(polycube, -1, axis=1), 2)
+
+    # rotate about axis 2, now shape is pointing in axis 1
+    yield from rotations4(rot90(polycube, axis=2), 1)
+    yield from rotations4(rot90(polycube, -1, axis=2), 1)
+
+
+def rotations4(polycube, axis):
+    for i in range(4):
+        yield rot90(polycube, i, axis)
 
 def rot90(m, k=1, axis=2):
     """Rotate an array by 90 degrees in the counter-clockwise direction around the given axis"""
