@@ -39,7 +39,7 @@ def more(polycube):
 
 def rot90(m, k=1, axis=2):
     """Rotate an array by 90 degrees in the counter-clockwise direction around the given axis"""
-    return numpy.swapaxis(numpy.rot90(numpy.swapaxes(m, 2, axis), k), 2, axis)
+    return numpy.swapaxes(numpy.rot90(numpy.swapaxes(m, 2, axis), k), 2, axis)
 
 def solve(pieces):
     # loop over possibles
