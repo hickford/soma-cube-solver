@@ -24,25 +24,28 @@ def from_heights(s):
 
 pieces = [from_heights(s) for s in raw_pieces]
 
-def rotations(polycube):
+def rotations24(polycube):
     # imagine shape is pointing in axis 0 (up)
 
-    # four rotations about axis 0
+    # 4 rotations about axis 0
     yield from rotations4(polycube, 0)
 
-    # rotate 180 about axis 1, shape is pointing down in axis 0
+    # rotate 180 about axis 1, now shape is pointing down in axis 0
+    # 4 rotations about axis 0
     yield from rotations4(rot90(polycube, 2, axis=1), 0)
 
-    # rotate about axis 1, now shape is pointing in axis 2
+    # rotate 90 or 270 about axis 1, now shape is pointing in axis 2
+    # 8 rotations about axis 2
     yield from rotations4(rot90(polycube, axis=1), 2)
     yield from rotations4(rot90(polycube, -1, axis=1), 2)
 
     # rotate about axis 2, now shape is pointing in axis 1
+    # 8 rotations about axis 1
     yield from rotations4(rot90(polycube, axis=2), 1)
     yield from rotations4(rot90(polycube, -1, axis=2), 1)
 
-
 def rotations4(polycube, axis):
+    """List the four rotations of the given cube about the given axis."""
     for i in range(4):
         yield rot90(polycube, i, axis)
 
