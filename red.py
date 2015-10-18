@@ -45,6 +45,10 @@ def solve(pieces):
     # loop over possibles
     pass
 
+def distinct(arrays):
+    """Count the number of distinct arrays in the given list of arrays"""
+    return len(set(str(x) for x in arrays))
+
 if __name__ == "__main__":
     two = numpy.array([[[1, 0],
         [1, 0]],
