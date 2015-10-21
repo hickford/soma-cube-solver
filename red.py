@@ -55,7 +55,11 @@ def rot90(m, k=1, axis=2):
     return numpy.swapaxes(numpy.rot90(numpy.swapaxes(m, 2, axis), k), 2, axis)
 
 def solve(progress, pieces):
-    for possible in transformations(pieces[0]):
+    if not pieces:
+        # done
+        return [True]
+
+    for possible in pieces[0]:
         if numpy.max(progress + possible) > 1:
             continue
         attempt = solve(progress + possible, pieces[1:])
@@ -83,13 +87,13 @@ def distinct(arrays):
 
 def translations(polycube):
     """List all translation of given cube within 3x3x3 grid"""
-    # what about negatives?
-    for i in range(3):
-        for j in range(3):
-            for k in range(3):
-                pass
+    assert polycube[0,0,0] != 0 # so don't have to bother with negative translations
 
-    return [polycube]
+    extents = tuple(coords.max() for coords in numpy.nonzero(three))
+    for x in range(3-extents[0]):
+        for y in range(3-extents[1]):
+            for z in range(3-extents[2]):
+                yield numpy.roll(numpy.roll(numpy.roll(polycube, x, 0), y, 1), z, 2)
 
 if __name__ == "__main__":
     two = numpy.array([[[1, 0],
@@ -110,5 +114,6 @@ if __name__ == "__main__":
         [0, 0, 0],
         [0, 0, 0]]])
 
-    solution = solve(numpy.zeros((3,3,3),int), pieces)
+    transformations_by_piece = [transformations(piece) for piece in pieces]
+    solution = solve(numpy.zeros((3,3,3),int), transformations_by_piece)
     print(solution)
