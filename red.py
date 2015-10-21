@@ -23,8 +23,9 @@ def from_heights(s):
     return shape
 
 pieces = [from_heights(s) for s in raw_pieces]
+# to do: sort largest to smallest
 
-def rotations(polycube):
+def rotations24(polycube):
     # imagine shape is pointing in axis 0 (up)
 
     # four rotations about axis 0
@@ -50,13 +51,42 @@ def rot90(m, k=1, axis=2):
     """Rotate an array by 90 degrees in the counter-clockwise direction around the given axis"""
     return numpy.swapaxes(numpy.rot90(numpy.swapaxes(m, 2, axis), k), 2, axis)
 
-def solve(pieces):
-    # loop over possibles
-    pass
+def solve(progress, pieces):
+    for possible in transformations(pieces[0]):
+        if numpy.max(progress + possible) > 1:
+            continue
+        attempt = solve(progress + possible, pieces[1:])
+        if attempt:
+            return [possible] + attempt
+    return False
+
+def transformations(polycube):
+    """List all transformations (rotations and translations) of polycube"""
+    transforms = list()
+
+    for translation in translations(polycube):
+        transforms.extend(rotations24(translation))
+
+    return distinct(transforms)
 
 def distinct(arrays):
-    """Count the number of distinct arrays in the given list of arrays"""
-    return len(set(str(x) for x in arrays))
+    """Distinct elements from list of arrays"""
+    distinct = list()
+    for M in arrays:
+        if any(numpy.array_equal(M, N) for N in distinct):
+            continue
+        distinct.append(M)
+    return distinct
+
+def translations(polycube):
+    """List all translation of given cube within 3x3x3 grid"""
+    # what about negatives?
+    for i in range(3):
+        for j in range(3):
+            for k in range(3):
+                pass
+
+    return [polycube]
 
 if __name__ == "__main__":
     two = numpy.array([[[1, 0],
@@ -76,3 +106,6 @@ if __name__ == "__main__":
        [[0, 0, 0],
         [0, 0, 0],
         [0, 0, 0]]])
+
+    solution = solve(numpy.zeros((3,3,3),int), pieces)
+    print(solution)
