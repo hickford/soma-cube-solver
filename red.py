@@ -57,13 +57,13 @@ def rot90(m, k=1, axis=2):
 def solve(progress, pieces):
     if not pieces:
         # done
-        return [True]
+        return []
 
     for possible in pieces[0]:
         if numpy.max(progress + possible) > 1:
             continue
         attempt = solve(progress + possible, pieces[1:])
-        if attempt:
+        if attempt != False:
             return [possible] + attempt
     return False
 
@@ -95,6 +95,9 @@ def translations(polycube):
             for z in range(3-extents[2]):
                 yield numpy.roll(numpy.roll(numpy.roll(polycube, x, 0), y, 1), z, 2)
 
+def pretty(solution):
+    return sum((i+1) * M for (i, M) in enumerate(solution))
+
 if __name__ == "__main__":
     two = numpy.array([[[1, 0],
         [1, 0]],
@@ -116,4 +119,4 @@ if __name__ == "__main__":
 
     transformations_by_piece = [transformations(piece) for piece in pieces]
     solution = solve(numpy.zeros((3,3,3),int), transformations_by_piece)
-    print(solution)
+    print(pretty(solution))
