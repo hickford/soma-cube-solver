@@ -89,7 +89,7 @@ def translations(polycube):
     """List all translation of given cube within 3x3x3 grid"""
     assert polycube[0,0,0] != 0 # so don't have to bother with negative translations
 
-    extents = tuple(coords.max() for coords in numpy.nonzero(three))
+    extents = tuple(coords.max() for coords in numpy.nonzero(polycube))
     for x in range(3-extents[0]):
         for y in range(3-extents[1]):
             for z in range(3-extents[2]):
