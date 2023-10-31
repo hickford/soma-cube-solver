@@ -1,10 +1,11 @@
 # pieces by height
 raw = """
-1   2   211 2   2  
-11  21  1   11  1  
-111  1  1       11 """.lstrip()
+1   1   1   1   1   2   1  
+11  1   11  11  12  11  21 
+    11  1    1             """.lstrip()
+### ### ### ### ### ### ###
 
-raw_pieces = ["\n".join(line[4*i:4*i+3] for line in raw.splitlines()) for i in range(5)]
+raw_pieces = ["\n".join(line[4*i:4*i+3] for line in raw.splitlines()) for i in range(7)]
 
 import numpy
 
