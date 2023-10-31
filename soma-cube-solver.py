@@ -1,9 +1,10 @@
-# pieces by height
+# seven soma pieces described by 2d matrix of heights (no overhangs)
 raw = """
 1   1   1   1   1   2   1  
 11  1   11  11  12  11  21 
     11  1    1             """.lstrip()
 ### ### ### ### ### ### ###
+#V   L   T   Z   A   B   P
 
 raw_pieces = ["\n".join(line[4*i:4*i+3] for line in raw.splitlines()) for i in range(7)]
 
